@@ -179,7 +179,7 @@ export function loadBreadcrumbs(mainList, item) {
     breadcrumb = `<p><span class="capitalize">${mainList}</span>->${item}</p>`;
   }
   p.innerHTML = breadcrumb;
-
+//note
   // put it all together
   header.after(div);
   div.appendChild(p);
