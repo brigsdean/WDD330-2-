@@ -1,7 +1,7 @@
 //Feeds into product.js which feeds the product_pages/index.html
 //contain code to dynamically produce the product details
 //also contains the addToCart method
-import {setLocalStorage, renderCartCount, capitalizeWord} from './utils.mjs';
+import {setLocalStorage, renderCartCount} from './utils.mjs';
 
 
 //template literal to populate the detail information for the given product
@@ -41,7 +41,6 @@ export default class ProductDetail {
         // Notice the .bind(this). Our callback will not work if we don't include that line. Review the readings from this week on 'this' to understand why.
         document.getElementById('addToCart')
           .addEventListener('click', this.addToCart.bind(this));
-        this.renderBreadCrumb(this.product.Category);
     }
     //simply adds the product info to the local storage.
     addToCart(){
@@ -58,10 +57,5 @@ export default class ProductDetail {
             "afterBegin",
             productDetailsTemplate(this.product)
         )
-    } 
-    renderBreadCrumb(category){
-      const breadcrumbElement = document.getElementById('breadcrumb-category');
-      breadcrumbElement.innerHTML = `${capitalizeWord(category)}`;
-      breadcrumbElement.setAttribute('href',`../product-listing/index.html?category=${category}`);
-    }      
+    }   
 }
