@@ -1,33 +1,42 @@
-export default class Alert {
-    constructor() {
-        this.loadAlerts();
+// Alert.js
+
+class Alert {
+  constructor() {
+    this.alertsData = [];
+  }
+
+  async fetchAlertsData() {
+    try {
+      const response = await fetch('../json/alerts.json');
+      if (response.ok) {
+        this.alertsData = await response.json();
+      }
+    } catch (error) {
+      this.alertsData = [];
+    }
+  }
+
+  createAlertElements() {
+    if (this.alertsData.length === 0) {
+      return; // No alerts, exit early
     }
 
-    async loadAlerts() {
-        try {
-            const response = await fetch("/json/alerts.json");
-            const data = await response.json();
+    const alertSection = document.createElement('section');
+    alertSection.classList.add('alert-list');
 
-            if (data.length > 0) {  
-                const section = document.createElement("section");
-                section.className = "alert-list";
+    this.alertsData.forEach((alert) => {
+      const alertMessage = document.createElement('p');
+      alertMessage.textContent = alert.message;
+      alertMessage.style.backgroundColor = alert.background;
+      alertMessage.style.color = alert.color;
+      alertMessage.classList.add('alert-item'); // Adds the CSS class to each alert element
 
-                data.forEach(alert => {
-                    const p = document.createElement("p");
-                    p.textContent = alert.message;
-                    p.style.background = alert.background;
-                    p.style.color = alert.color;
-                    p.style.textAlign = "center";
-                    section.appendChild(p);
-                });
+      alertSection.appendChild(alertMessage);
+    });
 
-                const main = document.querySelector("main");
-                if (main) {
-                    main.prepend(section);
-                }
-            }
-        } catch (error) {
-            console.error("Failed to load alerts:", error);
-        }
-    }
+    const mainElement = document.querySelector('main');
+    mainElement.prepend(alertSection);
+  }
 }
+
+export default Alert;
